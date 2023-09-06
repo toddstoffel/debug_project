@@ -7,6 +7,7 @@ services:
     hostname: node1
     container_name: node1
     volumes:
+      - mariadb1:/etc/my.cnf.d
       - data1:/var/lib/mysql
     env_file:
       - .env
@@ -23,6 +24,7 @@ services:
     hostname: node2
     container_name: node2
     volumes:
+      - mariadb2:/etc/my.cnf.d
       - data2:/var/lib/mysql
     env_file:
       - .env
@@ -38,6 +40,7 @@ services:
     hostname: node3
     container_name: node3
     volumes:
+      - mariadb3:/etc/my.cnf.d
       - data3:/var/lib/mysql
     env_file:
       - .env
@@ -82,8 +85,11 @@ services:
       - 8990:8989
 
 volumes:
+  mariadb1:
+  mariadb2:
+  mariadb3:
+  maxscale1:
+  maxscale2:
   data1:
   data2:
   data3:
-  maxscale1:
-  maxscale2:
