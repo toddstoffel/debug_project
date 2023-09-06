@@ -1,0 +1,89 @@
+version: '3'
+
+services:
+
+  node1:
+    image: ${MCS_IMAGE_NAME}
+    hostname: node1
+    container_name: node1
+    volumes:
+      - data1:/var/lib/mysql
+    env_file:
+      - .env
+    depends_on:
+      - "node3"
+    links:
+      - "node2"
+      - "node3"
+    ports:
+      - 3307:3306
+
+  node2:
+    image: ${MCS_IMAGE_NAME}
+    hostname: node2
+    container_name: node2
+    volumes:
+      - data2:/var/lib/mysql
+    env_file:
+      - .env
+    depends_on:
+      - "node3"
+    links:
+      - "node3"
+    ports:
+      - 3308:3306
+
+  node3:
+    image: ${MCS_IMAGE_NAME}
+    hostname: node3
+    container_name: node3
+    volumes:
+      - data3:/var/lib/mysql
+    env_file:
+      - .env
+    ports:
+      - 3309:3306
+
+  node4:
+    image: ${MX_IMAGE_NAME}
+    hostname: node4
+    container_name: node4
+    volumes:
+      - maxscale1:/var/lib/maxscale
+    env_file:
+      - .env
+    depends_on:
+      - "node1"
+    links:
+      - "node1"
+      - "node2"
+      - "node3"
+    ports:
+      - 3310:3306
+      - 8989:8989
+
+  node5:
+    image: ${MX_IMAGE_NAME}
+    hostname: node5
+    container_name: node5
+    volumes:
+      - maxscale2:/var/lib/maxscale
+    env_file:
+      - .env
+    depends_on:
+      - "node1"
+    links:
+      - "node1"
+      - "node2"
+      - "node3"
+      - "node4"
+    ports:
+      - 3311:3306
+      - 8990:8989
+
+volumes:
+  data1:
+  data2:
+  data3:
+  maxscale1:
+  maxscale2:
